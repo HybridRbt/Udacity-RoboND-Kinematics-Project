@@ -52,10 +52,30 @@ def handle_calculate_IK(req):
         alpha5: -pi/2, a5:      0, d6:              0, q6: 0,
         alpha6:     0, a6:      0, d7: (0.193 + 0.11),
     }
-	#
+
 	# Define Modified DH Transformation matrix
-	#
-	#
+	T0_1 = GetHTFromDH(q1, d1, a0, alpha0)
+    T0_1 = T0_1.subs(s)
+
+    T1_2 = GetHTFromDH(q2, d2, a1, alpha1)
+    T1_2 = T1_2.subs(s)
+
+    T2_3 = GetHTFromDH(q3, d3, a2, alpha2)
+    T2_3 = T2_3.subs(s)
+
+    T3_4 = GetHTFromDH(q4, d4, a3, alpha3)
+    T3_4 = T3_4.subs(s)
+
+    T4_5 = GetHTFromDH(q5, d5, a4, alpha4)
+    T4_5 = T4_5.subs(s)
+
+	T5_6 = GetHTFromDH(q6, d6, a5, alpha5)
+    T5_6 = T5_6.subs(s)
+
+    T6_G = GetHTFromDH(q7, d7, a6, alpha6)
+    T6_G = T6_G.subs(s)
+
+    #
 	# Create individual transformation matrices
 	#
 	#
