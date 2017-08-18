@@ -75,10 +75,28 @@ def handle_calculate_IK(req):
     T6_G = GetHTFromDH(q7, d7, a6, alpha6)
     T6_G = T6_G.subs(s)
 
-    #
 	# Create individual transformation matrices
-	#
-	#
+    print("T0_1 = ", GetTransEval(T0_1))
+
+    T0_2 = simplify(T0_1*T1_2)
+    print("T0_2 = ", GetTransEval(T0_2))
+
+    T0_3 = simplify(T0_2*T2_3)
+    print("T0_3 = ", GetTransEval(T0_3))
+
+    T0_4 = simplify(T0_3*T3_4)
+    print("T0_4 = ", GetTransEval(T0_4))
+
+    T0_5 = simplify(T0_4*T4_5)
+    print("T0_5 = ", GetTransEval(T0_5))
+
+    T0_6 = simplify(T0_5*T5_6)
+    print("T0_6 = ", GetTransEval(T0_6))
+
+    T0_G = simplify(T0_6*T6_G)
+    print("T0_G = ", GetTransEval(T0_G))
+
+    #
 	# Extract rotation matrices from the transformation matrices
 	#
 	#
@@ -128,6 +146,10 @@ def GetHTFromDH(q, d, a, alpha):
                 [                0,                 0,           0,             1]
                ])
     return T
+
+# a helper function to numerically evaluate transforms when all input q is 0
+def GetTransEval(T):
+    return T.evalf(subs={q1: 0, q2: 0, q3: 0, q4: 0, q5: 0, q6: 0, q7: 0})
 
 def IK_server():
     # initialize node and declare calculate_ik service
