@@ -113,8 +113,23 @@ def handle_calculate_IK(req):
                     req.poses[x].orientation.z, req.poses[x].orientation.w])
 
             ### Your IK code here
-	    # Compensate for rotation discrepancy between DH parameters and Gazebo
-	    #
+	        # Compensate for rotation discrepancy between DH parameters and Gazebo
+            # get homogeneous transform for z-axis
+            R_z = Matrix([
+                        [cos(np.pi), -sin(np.pi), 0, 0],
+                        [sin(np.pi),  cos(np.pi), 0, 0],
+                        [         0,           0, 1, 0],
+                        [         0,           0, 0, 1]
+                        ])
+            # get homogeneous transform for y-axis
+            R_y = Matrix([
+                        [ cos(-np.pi/2), 0, sin(-np.pi/2), 0],
+                        [             0, 1,             0, 0],
+                        [-sin(-np.pi/2), 0, cos(-np.pi/2), 0],
+                        [             0, 0,             0, 1]
+                        ])
+            # get the compensate transform
+            R_comp = simplify(R_z * R_y)
 	    #
 	    # Calculate joint angles using Geometric IK method
 	    #
