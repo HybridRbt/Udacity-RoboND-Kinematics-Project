@@ -98,6 +98,17 @@ def handle_calculate_IK(req):
         rospy.loginfo("length of Joint Trajectory List: %s" % len(joint_trajectory_list))
         return CalculateIKResponse(joint_trajectory_list)
 
+# a helper function to generate homogeneous transforms from DH parameters
+def GetHTFromDH(q, d, a, alpha):
+    # q, d, a, alpha are DH parameters
+    T = Matrix([
+                [           cos(q),           -sin(q),           0,             a],
+                [sin(q)*cos(alpha), cos(q)*cos(alpha), -sin(alpha), -sin(alpha)*d],
+                [sin(q)*sin(alpha), cos(q)*sin(alpha),  cos(alpha),  cos(alpha)*d],
+                [                0,                 0,           0,             1]
+               ])
+    return T
+
 def IK_server():
     # initialize node and declare calculate_ik service
     rospy.init_node('IK_server')
