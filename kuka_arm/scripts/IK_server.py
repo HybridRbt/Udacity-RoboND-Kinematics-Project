@@ -113,7 +113,25 @@ def handle_calculate_IK(req):
                     req.poses[x].orientation.z, req.poses[x].orientation.w])
 
             ### Your IK code here
-	        # Compensate for rotation discrepancy between DH parameters and Gazebo
+            # Construct the rotation matrix of ee from the roll pitch yaw and pos data
+            R_ee_x = Matrix([
+                          [1,         0,          0],
+                          [0, cos(roll), -sin(roll)],
+                          [0, sin(roll),  cos(roll)]
+                          ])
+            R_ee_y = Matrix([
+                          [cos(pitch),  0, sin(pitch)],
+                          [0,           1,          0],
+                          [-sin(pitch), 0, cos(pitch)]
+                          ])
+            R_ee_z = Matrix([
+                         [cos(yaw), -sin(yaw), 0],
+                         [sin(yaw),  cos(yaw), 0],
+                         [       0,         0, 1]
+                         ])
+            R_ee = R_ee_z * R_ee_y * R_ee_x
+
+            # Compensate for rotation discrepancy between DH parameters and Gazebo
             # get homogeneous transform for z-axis
             R_z = Matrix([
                         [cos(np.pi), -sin(np.pi), 0, 0],
@@ -130,7 +148,10 @@ def handle_calculate_IK(req):
                         ])
             # get the compensate transform
             R_comp = simplify(R_z * R_y)
-	    #
+
+            R_ee = R_ee * R_comp
+
+        #
 	    # Calculate joint angles using Geometric IK method
 	    #
 	    #
