@@ -151,6 +151,16 @@ def handle_calculate_IK(req):
 
             R_ee = R_ee * R_comp
 
+            # compute wc position
+            EE = Matrix([
+                        [px],
+                        [py],
+                        [pz]
+                        ])
+            # according to the formula from IK lesson
+            WC = EE - d7*R_ee[:,2]
+            # compute wc
+            WC = WC.subs(s)
         #
 	    # Calculate joint angles using Geometric IK method
 	    #
