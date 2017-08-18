@@ -25,82 +25,75 @@ def handle_calculate_IK(req):
         print "No valid poses received"
         return -1
     else:
-
         ### Your FK code here
         # Create symbols
-    # tricky part: for q and d, it's 1 ~ i
-    #              for a and alpha is't 0 ~ i-1
-    # qs
-    q1, q2, q3, q4, q5, q6, q7 = symbols('q1:8')
+        # tricky part: for q and d, it's 1 ~ i
+        #              for a and alpha is't 0 ~ i-1
+        # qs
+        q1, q2, q3, q4, q5, q6, q7 = symbols('q1:8')
 
-    # ds
-    d1, d2, d3, d4, d5, d6, d7 = symbols('d1:8')
+        # ds
+        d1, d2, d3, d4, d5, d6, d7 = symbols('d1:8')
 
-    # as
-    a0, a1, a2, a3, a4, a5, a6 = symbols('a0:7')
+        # as
+        a0, a1, a2, a3, a4, a5, a6 = symbols('a0:7')
 
-    # alphas
-    alpha0, alpha1, alpha2, alpha3, alpha4, alpha5, alpha6 = symbols('alpha0:7')
+        # alphas
+        alpha0, alpha1, alpha2, alpha3, alpha4, alpha5, alpha6 = symbols('alpha0:7')
 
-	# Create Modified DH parameters
-	s = {
-        alpha0:     0, a0:      0, d1:  (0.42 + 0.33), q1: 0,
-        alpha1: -pi/2, a1:   0.35, d2:              0, q2: q2 - pi/2,
-        alpha2:     0, a2:   1.25, d3:              0, q3: 0,
-        alpha3: -pi/2, a3: -0.054, d4:  (0.96 + 0.54), q4: 0,
-        alpha4:  pi/2, a4:      0, d5:              0, q5: 0,
-        alpha5: -pi/2, a5:      0, d6:              0, q6: 0,
-        alpha6:     0, a6:      0, d7: (0.193 + 0.11), q7: 0
-    }
+    	# Create Modified DH parameters
+    	s = {
+            alpha0:     0, a0:      0, d1:  (0.42 + 0.33), q1: 0,
+            alpha1: -pi/2, a1:   0.35, d2:              0, q2: q2 - pi/2,
+            alpha2:     0, a2:   1.25, d3:              0, q3: 0,
+            alpha3: -pi/2, a3: -0.054, d4:  (0.96 + 0.54), q4: 0,
+            alpha4:  pi/2, a4:      0, d5:              0, q5: 0,
+            alpha5: -pi/2, a5:      0, d6:              0, q6: 0,
+            alpha6:     0, a6:      0, d7: (0.193 + 0.11), q7: 0
+        }
 
-	# Define Modified DH Transformation matrix
-	T0_1 = GetHTFromDH(q1, d1, a0, alpha0)
-    T0_1 = T0_1.subs(s)
+    	# Define Modified DH Transformation matrix
+    	T0_1 = GetHTFromDH(q1, d1, a0, alpha0)
+        T0_1 = T0_1.subs(s)
 
-    T1_2 = GetHTFromDH(q2, d2, a1, alpha1)
-    T1_2 = T1_2.subs(s)
+        T1_2 = GetHTFromDH(q2, d2, a1, alpha1)
+        T1_2 = T1_2.subs(s)
 
-    T2_3 = GetHTFromDH(q3, d3, a2, alpha2)
-    T2_3 = T2_3.subs(s)
+        T2_3 = GetHTFromDH(q3, d3, a2, alpha2)
+        T2_3 = T2_3.subs(s)
 
-    T3_4 = GetHTFromDH(q4, d4, a3, alpha3)
-    T3_4 = T3_4.subs(s)
+        T3_4 = GetHTFromDH(q4, d4, a3, alpha3)
+        T3_4 = T3_4.subs(s)
 
-    T4_5 = GetHTFromDH(q5, d5, a4, alpha4)
-    T4_5 = T4_5.subs(s)
+        T4_5 = GetHTFromDH(q5, d5, a4, alpha4)
+        T4_5 = T4_5.subs(s)
 
-	T5_6 = GetHTFromDH(q6, d6, a5, alpha5)
-    T5_6 = T5_6.subs(s)
+    	T5_6 = GetHTFromDH(q6, d6, a5, alpha5)
+        T5_6 = T5_6.subs(s)
 
-    T6_G = GetHTFromDH(q7, d7, a6, alpha6)
-    T6_G = T6_G.subs(s)
+        T6_G = GetHTFromDH(q7, d7, a6, alpha6)
+        T6_G = T6_G.subs(s)
 
-	# Create individual transformation matrices
-    print("T0_1 = ", GetTransEval(T0_1))
+    	# Create individual transformation matrices
+        print("T0_1 = ", GetTransEval(T0_1))
 
-    T0_2 = simplify(T0_1*T1_2)
-    print("T0_2 = ", GetTransEval(T0_2))
+        T0_2 = simplify(T0_1*T1_2)
+        print("T0_2 = ", GetTransEval(T0_2))
 
-    T0_3 = simplify(T0_2*T2_3)
-    print("T0_3 = ", GetTransEval(T0_3))
+        T0_3 = simplify(T0_2*T2_3)
+        print("T0_3 = ", GetTransEval(T0_3))
 
-    T0_4 = simplify(T0_3*T3_4)
-    print("T0_4 = ", GetTransEval(T0_4))
+        T0_4 = simplify(T0_3*T3_4)
+        print("T0_4 = ", GetTransEval(T0_4))
 
-    T0_5 = simplify(T0_4*T4_5)
-    print("T0_5 = ", GetTransEval(T0_5))
+        T0_5 = simplify(T0_4*T4_5)
+        print("T0_5 = ", GetTransEval(T0_5))
 
-    T0_6 = simplify(T0_5*T5_6)
-    print("T0_6 = ", GetTransEval(T0_6))
+        T0_6 = simplify(T0_5*T5_6)
+        print("T0_6 = ", GetTransEval(T0_6))
 
-    T0_G = simplify(T0_6*T6_G)
-    print("T0_G = ", GetTransEval(T0_G))
-
-    #
-	# Extract rotation matrices from the transformation matrices
-	#
-	#
-        ###
+        T0_G = simplify(T0_6*T6_G)
+        print("T0_G = ", GetTransEval(T0_G))
 
         # Initialize service response
         joint_trajectory_list = []
