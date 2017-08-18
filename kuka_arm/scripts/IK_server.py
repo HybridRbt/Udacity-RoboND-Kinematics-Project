@@ -41,9 +41,17 @@ def handle_calculate_IK(req):
 
     # alphas
     alpha0, alpha1, alpha2, alpha3, alpha4, alpha5, alpha6 = symbols('alpha0:7')
-	#
+
 	# Create Modified DH parameters
-	#
+	s = {
+        alpha0:     0, a0:      0, d1:  (0.42 + 0.33), q1: 0,
+        alpha1: -pi/2, a1:   0.35, d2:              0, q2: q2 - pi/2,
+        alpha2:     0, a2:   1.25, d3:              0, q3: 0,
+        alpha3: -pi/2, a3: -0.054, d4:  (0.96 + 0.54), q4: 0,
+        alpha4:  pi/2, a4:      0, d5:              0, q5: 0,
+        alpha5: -pi/2, a5:      0, d6:              0, q6: 0,
+        alpha6:     0, a6:      0, d7: (0.193 + 0.11),
+    }
 	#
 	# Define Modified DH Transformation matrix
 	#
@@ -89,7 +97,6 @@ def handle_calculate_IK(req):
 
         rospy.loginfo("length of Joint Trajectory List: %s" % len(joint_trajectory_list))
         return CalculateIKResponse(joint_trajectory_list)
-
 
 def IK_server():
     # initialize node and declare calculate_ik service
