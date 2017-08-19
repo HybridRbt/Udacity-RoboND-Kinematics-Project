@@ -161,9 +161,10 @@ def handle_calculate_IK(req):
             WC = EE - d7*R_ee[:,2]
             # compute wc
             WC = WC.subs(s)
-        #
-	    # Calculate joint angles using Geometric IK method
-	    #
+
+	        # Calculate joint angles using Geometric IK method
+	        # calculate theta1 from wc pos directly
+            theta1 = atan2(WC[1], WC[0])
 	    #
             ###
 
