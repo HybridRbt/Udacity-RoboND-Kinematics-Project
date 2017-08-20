@@ -251,9 +251,6 @@ def test_code(test_case):
     # ang_b0 is a constant that can be moved out of the loop to save computation time
     theta3 = pi/2 - (ang_b + ang_b0)
 
-    # construct rot from joint 0 to 3
-    R0_3 = T0_1[0:3, 0:3] * T1_2[0:3, 0:3] * T2_3[0:3, 0:3]
-
     # evaluate it
     R0_3 = R0_3.evalf(subs={q1: theta1, q2: theta2, q3: theta3})
 
