@@ -186,13 +186,12 @@ def test_code(test_case):
                  [sin(y),  cos(y), 0],
                  [       0,         0, 1]
                  ])
-
     R_ee = R_ee_z * R_ee_y * R_ee_x
     R_ee = R_ee * R_comp
 
-    # Extract end-effector position and orientation from request
-    # px,py,pz = end-effector position
-    # roll, pitch, yaw = end-effector orientation
+# Extract end-effector position and orientation from request
+# px,py,pz = end-effector position
+# roll, pitch, yaw = end-effector orientation
     px = req.poses[x].position.x
     py = req.poses[x].position.y
     pz = req.poses[x].position.z
