@@ -170,8 +170,68 @@ def handle_calculate_IK(req):
 	        # Calculate joint angles using Geometric IK method
 	        # calculate theta1 from wc pos directly
             theta1 = atan2(WC[1], WC[0])
-	    #
-            ###
+
+            # calculate theta2
+            A = (0.96 + 0.54)  # d4
+            C = 1.25           # a2
+
+            # calculate B
+            wc_x = WC[0]
+            wc_y = WC[1]
+            wc_z = WC[2]
+
+            b0 = sqrt(wc_x**2 + wc_y**2)
+            b1 = b0 - 0.35 # consider the offset of a1
+            b2 = wc_z - 0.75  # the offset of d1
+            B = sqrt(b1**2 + b2**2)
+
+            # got all the sides, compute the angles
+            cos_ang_a = (B**2 + C**2 - A**2) / (2*B*C)
+            cos_ang_b = (A**2 + C**2 - B**2) / (2*A*C)
+            cos_ang_c = (A**2 + B**2 - C**2) / (2*A*B)
+
+            ang_a = acos(cos_ang_a)
+            ang_b = acos(cos_ang_b)
+            ang_c = acos(cos_ang_c)
+
+            # got all the angles, compute theta2 and theta3 from them
+            # tan(a0) = b2/b1
+            ang_a0 = atan2(b2, b1)
+            theta2 = pi/2 - ang_a - ang_a0
+
+            # consider the small slope from joint 3 to joint 4
+            # ang_b0 is a constant that can be moved out of the loop to save computation time
+            theta3 = pi/2 - (ang_b + ang_b0)
+
+            # construct rot from joint 0 to 3
+            R0_3 = T0_1[0:3, 0:3] * T1_2[0:3, 0:3] * T2_3[0:3, 0:3]
+
+            # evaluate it
+            R0_3 = R0_3.evalf(subs={q1: theta1, q2: theta2, q3: theta3})
+
+            # get rot from joint 3 to 6
+            R3_6 = R0_3.inv("LU") * R_ee
+
+            # get theta4, theta5, theta6
+            # same code taken from Lesson 2-8
+            # define r11, r12, r13
+            r11 = R3_6.row(0)[0]
+            r12 = R3_6.row(0)[1]
+            r13 = R3_6.row(0)[2]
+
+            # define r21, r22, r23
+            r21 = R3_6.row(1)[0]
+            r22 = R3_6.row(1)[1]
+            r23 = R3_6.row(1)[2]
+
+            # define r31, r32, r33
+            r31 = R3_6.row(2)[0]
+            r32 = R3_6.row(2)[1]
+            r33 = R3_6.row(2)[2]
+
+            theta4 = atan2(r21, r11) # rotation about Z-axis
+            theta5 = atan2(-r31, sqrt(r11*r11 + r21*r21)) # rotation about Y-axis
+            theta6 = atan2(r32, r33) # rotation about X-axis
 
             # Populate response for the IK request
             # In the next line replace theta1,theta2...,theta6 by your joint angle variables
