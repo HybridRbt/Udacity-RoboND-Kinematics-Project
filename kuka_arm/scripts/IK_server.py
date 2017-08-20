@@ -18,7 +18,6 @@ from geometry_msgs.msg import Pose
 from mpmath import *
 from sympy import *
 
-
 def handle_calculate_IK(req):
     rospy.loginfo("Received %s eef-poses from the plan" % len(req.poses))
     if len(req.poses) < 1:
@@ -77,22 +76,21 @@ def handle_calculate_IK(req):
     	# Create individual transformation matrices
         #print("T0_1 = ", GetTransEval(T0_1))
 
-        T0_2 = simplify(T0_1*T1_2)
         #print("T0_2 = ", GetTransEval(T0_2))
+        #T0_2 = T0_1*T1_2
 
-        T0_3 = simplify(T0_2*T2_3)
         #print("T0_3 = ", GetTransEval(T0_3))
+        #T0_3 = T0_2*T2_3
 
-        T0_4 = simplify(T0_3*T3_4)
         #print("T0_4 = ", GetTransEval(T0_4))
+        #T0_4 = T0_3*T3_4
 
-        T0_5 = simplify(T0_4*T4_5)
         #print("T0_5 = ", GetTransEval(T0_5))
+        #T0_5 = T0_4*T4_5
 
-        T0_6 = simplify(T0_5*T5_6)
         #print("T0_6 = ", GetTransEval(T0_6))
+        #T0_6 = T0_5*T5_6
 
-        T0_G = simplify(T0_6*T6_G)
         #print("T0_G = ", GetTransEval(T0_G))
 
         # tan(b0) = a3/d4
