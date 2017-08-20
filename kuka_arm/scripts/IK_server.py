@@ -187,10 +187,6 @@ def GetHTFromDH(q, d, a, alpha):
                ])
     return T
 
-# a helper function to numerically evaluate transforms when all input q is 0
-def GetTransEval(T):
-    return T.evalf(subs={q1: 0, q2: 0, q3: 0, q4: 0, q5: 0, q6: 0, q7: 0})
-
 def IK_server():
     # initialize node and declare calculate_ik service
     rospy.init_node('IK_server')
