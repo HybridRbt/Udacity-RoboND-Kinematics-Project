@@ -154,42 +154,7 @@ def handle_calculate_IK(req):
 
             ### Your IK code here
             # Construct the rotation matrix of ee from the roll pitch yaw and pos data
-            R_ee_x = Matrix([
-                          [1,         0,          0],
-                          [0, cos(roll), -sin(roll)],
-                          [0, sin(roll),  cos(roll)]
-                          ])
-            R_ee_y = Matrix([
-                          [cos(pitch),  0, sin(pitch)],
-                          [0,           1,          0],
-                          [-sin(pitch), 0, cos(pitch)]
-                          ])
-            R_ee_z = Matrix([
-                         [cos(yaw), -sin(yaw), 0],
-                         [sin(yaw),  cos(yaw), 0],
-                         [       0,         0, 1]
-                         ])
-            R_ee = R_ee_z * R_ee_y * R_ee_x
-
-            # Compensate for rotation discrepancy between DH parameters and Gazebo
-            # get homogeneous transform for z-axis
-            R_z = Matrix([
-                        [cos(np.pi), -sin(np.pi), 0, 0],
-                        [sin(np.pi),  cos(np.pi), 0, 0],
-                        [         0,           0, 1, 0],
-                        [         0,           0, 0, 1]
-                        ])
-            # get homogeneous transform for y-axis
-            R_y = Matrix([
-                        [ cos(-np.pi/2), 0, sin(-np.pi/2), 0],
-                        [             0, 1,             0, 0],
-                        [-sin(-np.pi/2), 0, cos(-np.pi/2), 0],
-                        [             0, 0,             0, 1]
-                        ])
-            # get the compensate transform
-            R_comp = simplify(R_z * R_y)
-
-            R_ee = R_ee * R_comp
+            R_ee = R_ee.subs({'r': roll, 'p': pitch, 'y': yaw})
 
             # compute wc position
             EE = Matrix([
