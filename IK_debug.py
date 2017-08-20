@@ -274,9 +274,14 @@ def test_code(test_case):
     r32 = R3_6.row(2)[1]
     r33 = R3_6.row(2)[2]
 
-    theta4 = atan2(r21, r11) # rotation about Z-axis
-    theta5 = atan2(-r31, sqrt(r11*r11 + r21*r21)) # rotation about Y-axis
-    theta6 = atan2(r32, r33) # rotation about X-axis
+#            theta4 = atan2(r21, r11) # rotation about Z-axis
+#            theta5 = atan2(-r31, sqrt(r11*r11 + r21*r21)) # rotation about Y-axis
+#            theta6 = atan2(r32, r33) # rotation about X-axis
+
+    theta4 = atan2(R3_6[2,2], -R3_6[0,2]) # rotation about Z-axis
+    theta5 = atan2(sqrt(R3_6[0,2]*R3_6[0,2] + R3_6[2,2]*R3_6[2,2]), R3_6[1,2]) # rotation about Y-axis
+    theta6 = atan2(-R3_6[1,1], R3_6[1,0]) # rotation about X-axis
+
     ########################################################################################
     ########################################################################################
     ## For additional debugging add your forward kinematics here. Use your previously calculated thetas
