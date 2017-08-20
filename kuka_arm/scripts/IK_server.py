@@ -161,9 +161,9 @@ def handle_calculate_IK(req):
                         [pz]
                         ])
             # according to the formula from IK lesson
-            WC = EE - d7*R_ee[:,2]
+            WC = EE - 0.303*R_ee[:,2]
             # compute wc
-            WC = WC.subs(s)
+            #WC = WC.subs(s)
 
 	        # Calculate joint angles using Geometric IK method
 	        # calculate theta1 from wc pos directly
