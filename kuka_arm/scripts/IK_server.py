@@ -53,7 +53,7 @@ def handle_calculate_IK(req):
         }
 
     	# Define Modified DH Transformation matrix
-    	T0_1 = GetHTFromDH(q1, d1, a0, alpha0)
+        T0_1 = GetHTFromDH(q1, d1, a0, alpha0)
         T0_1 = T0_1.subs(s)
 
         T1_2 = GetHTFromDH(q2, d2, a1, alpha1)
@@ -68,7 +68,7 @@ def handle_calculate_IK(req):
         T4_5 = GetHTFromDH(q5, d5, a4, alpha4)
         T4_5 = T4_5.subs(s)
 
-    	T5_6 = GetHTFromDH(q6, d6, a5, alpha5)
+        T5_6 = GetHTFromDH(q6, d6, a5, alpha5)
         T5_6 = T5_6.subs(s)
 
         T6_G = GetHTFromDH(q7, d7, a6, alpha6)
