@@ -218,7 +218,6 @@ def test_code(test_case):
     # Calculate joint angles using Geometric IK method
     # calculate theta1 from wc pos directly
     theta1 = atan2(WC[1], WC[0])
-    #theta1 = GetValidDegree(theta1, 1)
 
     # calculate theta2
     A = (0.96 + 0.54)  # d4
