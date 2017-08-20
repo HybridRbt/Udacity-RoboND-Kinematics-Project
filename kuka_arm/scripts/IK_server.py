@@ -75,25 +75,65 @@ def handle_calculate_IK(req):
         T6_G = T6_G.subs(s)
 
     	# Create individual transformation matrices
-        print("T0_1 = ", GetTransEval(T0_1))
+        #print("T0_1 = ", GetTransEval(T0_1))
 
         T0_2 = simplify(T0_1*T1_2)
-        print("T0_2 = ", GetTransEval(T0_2))
+        #print("T0_2 = ", GetTransEval(T0_2))
 
         T0_3 = simplify(T0_2*T2_3)
-        print("T0_3 = ", GetTransEval(T0_3))
+        #print("T0_3 = ", GetTransEval(T0_3))
 
         T0_4 = simplify(T0_3*T3_4)
-        print("T0_4 = ", GetTransEval(T0_4))
+        #print("T0_4 = ", GetTransEval(T0_4))
 
         T0_5 = simplify(T0_4*T4_5)
-        print("T0_5 = ", GetTransEval(T0_5))
+        #print("T0_5 = ", GetTransEval(T0_5))
 
         T0_6 = simplify(T0_5*T5_6)
-        print("T0_6 = ", GetTransEval(T0_6))
+        #print("T0_6 = ", GetTransEval(T0_6))
 
         T0_G = simplify(T0_6*T6_G)
-        print("T0_G = ", GetTransEval(T0_G))
+        #print("T0_G = ", GetTransEval(T0_G))
+
+        # tan(b0) = a3/d4
+        ang_b0 = atan2(0.054, (0.96 + 0.54))
+
+        # Compensate for rotation discrepancy between DH parameters and Gazebo
+        # get transform for z-axis
+        R_z = Matrix([
+                    [cos(pi), -sin(pi), 0],
+                    [sin(pi),  cos(pi), 0],
+                    [      0,        0, 1]
+                    ])
+        # get transform for y-axis
+        R_y = Matrix([
+                    [ cos(-pi/2), 0, sin(-pi/2)],
+                    [          0, 1,          0],
+                    [-sin(-pi/2), 0, cos(-pi/2)]
+                    ])
+        # get the compensate transform
+        R_comp = simplify(R_z * R_y)
+
+        # Construct rot for ee symbolically
+        r, p, y = symbols('r p y')
+
+        R_ee_x = Matrix([
+                      [1,         0,          0],
+                      [0, cos(r), -sin(r)],
+                      [0, sin(r),  cos(r)]
+                      ])
+        R_ee_y = Matrix([
+                      [cos(p),  0, sin(p)],
+                      [0,           1,          0],
+                      [-sin(p), 0, cos(p)]
+                      ])
+        R_ee_z = Matrix([
+                     [cos(y), -sin(y), 0],
+                     [sin(y),  cos(y), 0],
+                     [       0,         0, 1]
+                     ])
+        R_ee = R_ee_z * R_ee_y * R_ee_x
+        R_ee = R_ee * R_comp
 
         # Initialize service response
         joint_trajectory_list = []
