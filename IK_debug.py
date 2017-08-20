@@ -166,8 +166,8 @@ def test_code(test_case):
                 [-sin(-pi/2), 0, cos(-pi/2)]
                 ])
     # get the compensate transform
-    R_comp = simplify(R_z * R_y)
-
+    #R_comp = simplify(R_z * R_y)
+    R_comp = R_z * R_y
     # Construct rot for ee symbolically
     r, p, y = symbols('r p y')
 
