@@ -4,10 +4,15 @@ from mpmath import radians
 import tf
 
 '''
-Format of test case is [ [[EE position],[EE orientation as quaternions]],[WC location],[joint angles]]
-You can generate additional test cases by setting up your kuka project and running `$ roslaunch kuka_arm forward_kinematics.launch`
-From here you can adjust the joint angles to find thetas, use the gripper to extract positions and orientation (in quaternion xyzw) and lastly use link 5
-to find the position of the wrist center. These newly generated test cases can be added to the test_cases dictionary.
+Format of test case is [ [[EE position],
+                          [EE orientation as quaternions]],
+                          [WC location],[joint angles]]
+You can generate additional test cases by setting up your kuka project and
+running `$ roslaunch kuka_arm forward_kinematics.launch`
+From here you can adjust the joint angles to find thetas, use the gripper to
+extract positions and orientation (in quaternion xyzw) and lastly use link 5
+to find the position of the wrist center. These newly generated test cases
+can be added to the test_cases dictionary.
 '''
 
 test_cases = {1:[[[2.16135,-1.42635,1.55109],
